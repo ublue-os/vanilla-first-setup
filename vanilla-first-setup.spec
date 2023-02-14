@@ -4,15 +4,14 @@ Release:       1%{?dist}
 Summary:       This utility is meant to be used in Vanilla OS as a first-setup wizard. It takes care of the user choices.
 License:       GPL 3.0
 URL:           https://github.com/Vanilla-OS/first-setup
-Source:        https://github.com/Vanilla-OS/first-setup/archive/refs/tags/%{version}.tar.gz
+Source:        %{url}/archive/refs/tags/%{version}.tar.gz
 
-BuildRequires: make
 BuildRequires: meson
-BuildRequires: ninja-build
-BuildRequires: libadwaita-devel
 BuildRequires: python3-devel
 BuildRequires: gettext
 BuildRequires: desktop-file-utils
+	
+BuildRequires: pkgconfig(libadwaita-1) >= 1.1.99
 
 %description
 This utility is meant to be used in Vanilla OS as a first-setup wizard. It's purpose is to help the user to configure the system to their needs, e.g. by configuring snap, flatpak, flathub, etc.
@@ -29,18 +28,18 @@ This utility is meant to be used in Vanilla OS as a first-setup wizard. It's pur
 
 %install
 %meson_install
+%find_lang %{name}
 
 %check
 %meson_test
 
-%files
+%files -f %{name}.lang
 %license LICENSE
 %doc README.md
-%{_bindir}/%{name}
-%{_bindir}/%{name}-processor
-%{_datadir}/appdata/org.vanillaos.FirstSetup.appdata.xml
-%{_datadir}/applications/org.vanillaos.FirstSetup.desktop
-%{_datadir}/glib-2.0/schemas/org.vanillaos.FirstSetup.gschema.xml
+%attr(755, root, root) %{_bindir}/%{name}
+%attr(755, root, root) %{_bindir}/%{name}-processor
+%{_datadir}/appdata/*.appdata.xml
+%{_datadir}/applications/*.desktop
+%{_datadir}/glib-2.0/schemas/*.gschema.xml
 %{_datadir}/icons/hicolor/*/*/*.svg
-%{_datadir}/locale/*/LC_MESSAGES/vanilla-first-setup.mo
 %{_datadir}/org.vanillaos.FirstSetup/*
